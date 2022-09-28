@@ -6,3 +6,133 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id                Int                 @id @default(autoincrement())
+  email             String              @unique
+  telephone         String
+  name              String
+  cpf               String              @unique
+  uid               String              @default(uuid())
+  description       String
+  is_active         Boolean             @default(true)
+  gym_feedback      Gym_Feedback[]
+  personal_Feedback Personal_Feedback[]
+  training          Training[]
+
+  @@map("user")
+}
+
+model City {
+  id        Int        @id @default(autoincrement())
+  name      String
+  city_code String
+  gym       Gym[]
+  personal  Personal[]
+
+  @@map("city")
+}
+
+model Specialty {
+  id                 Int                  @id @default(autoincrement())
+  name               String
+  description        String
+  personal_specialty Personal_Specialty[]
+
+  @@map("specialty")
+}
+
+model Gym {
+  id           Int            @id @default(autoincrement())
+  cep          String
+  name         String
+  open_time    DateTime
+  cnpj         String
+  is_active    Boolean        @default(true)
+  city         City           @relation(fields: [city_id], references: [id])
+  city_id      Int
+  gym_feedback Gym_Feedback[]
+
+  @@map("gym")
+}
+
+model Personal {
+  id                 Int                  @id @default(autoincrement())
+  email              String               @unique
+  telephone          String
+  name               String
+  cpf                String               @unique
+  uid                String               @default(uuid())
+  is_active          Boolean              @default(true)
+  is_admin           Boolean              @default(false)
+  description        String
+  hours_price        Float
+  city               City                 @relation(fields: [city_id], references: [id])
+  city_id            Int
+  payment            Payment[]
+  personal_feedback  Personal_Feedback[]
+  training           Training[]
+  personal_specialty Personal_Specialty[]
+
+  @@map("personal")
+}
+
+model Payment {
+  id           Int      @id @default(autoincrement())
+  payment_date DateTime @default(now())
+  due_date     DateTime
+  price        Float
+  personal     Personal @relation(fields: [personal_id], references: [id])
+  personal_id  Int
+
+  @@map("payment")
+}
+
+model Gym_Feedback {
+  id      Int    @id @default(autoincrement())
+  score   Float
+  comment String
+  gym     Gym    @relation(fields: [gym_id], references: [id])
+  gym_id  Int
+  user    User   @relation(fields: [user_id], references: [id])
+  user_id Int
+
+  @@map("gym_feedback")
+}
+
+model Personal_Feedback {
+  id          Int      @id @default(autoincrement())
+  score       Float
+  comment     String
+  personal    Personal @relation(fields: [personal_id], references: [id])
+  personal_id Int
+  user        User     @relation(fields: [user_id], references: [id])
+  user_id     Int
+
+  @@map("personal_feedback")
+}
+
+model Training {
+  id                   Int      @id @default(autoincrement())
+  training_price       Float
+  training_location    String
+  date_hour            DateTime
+  training_description String
+  training_time        DateTime
+  user                 User     @relation(fields: [user_id], references: [id])
+  user_id              Int
+  personal             Personal @relation(fields: [personal_id], references: [id])
+  personal_id          Int
+
+  @@map("training")
+}
+
+model Personal_Specialty {
+  id           Int       @id @default(autoincrement())
+  personal     Personal  @relation(fields: [personal_id], references: [id])
+  personal_id  Int
+  specialty    Specialty @relation(fields: [specialty_id], references: [id])
+  specialty_id Int
+
+  @@map("personal_specialty")
+}
