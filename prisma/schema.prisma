@@ -10,11 +10,12 @@ datasource db {
 model User {
   id                Int                 @id @default(autoincrement())
   email             String              @unique
-  telephone         String
+  telephone         String?
   name              String
-  cpf               String              @unique
-  uid               String              @default(uuid())
-  description       String
+  cpf               String?             @unique
+  uid               String?             @default(uuid())
+  password          String
+  description       String?
   is_active         Boolean             @default(true)
   gym_feedback      Gym_Feedback[]
   personal_Feedback Personal_Feedback[]
