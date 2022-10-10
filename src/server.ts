@@ -1,12 +1,15 @@
 import express, { NextFunction, Request, Response } from "express";
 import "express-async-errors";
 import { routes } from "./routes/routes";
-
+import cors from "cors";
+ 
 const app = express();
 
 app.use(express.json());
 
 app.use(routes);
+
+app.use(cors());
 
 // Middleware to show errors
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
