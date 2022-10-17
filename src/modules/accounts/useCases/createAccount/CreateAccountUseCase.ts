@@ -1,3 +1,4 @@
+import { UserRecord } from "firebase-admin/lib/auth/user-record";
 import { firebaseAdmin } from "../../../../database/Firebase-admin";
 
 interface ICreateAccount {
@@ -14,10 +15,14 @@ export class CreateAccountUseCase {
                 displayName: fullName,
                 email: email,
                 password,
-
+            })
+            .then((UserRecord) => {
+                firebaseAdmin.auth().generateEmailVerificationLink(email);
             })
             .catch((err) => {
                 throw new Error("Error creating new user: ", err) 
             })
+
+            return userFirebase;
     }
 }
