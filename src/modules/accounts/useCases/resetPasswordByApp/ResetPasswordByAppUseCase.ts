@@ -7,6 +7,7 @@ interface IResetPassword {
 
 export class ResetPasswordByAppUseCase {
     async execute({ uid, password }: IResetPassword) {
+        
         const userFirebase = await firebaseAdmin.auth()
             .updateUser(uid, {
                 password: password
