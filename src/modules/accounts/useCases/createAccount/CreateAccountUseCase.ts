@@ -1,14 +1,15 @@
+import { UserRecord } from "firebase-admin/lib/auth/user-record";
 import { firebaseAdmin } from "../../../../database/Firebase-admin";
 import { prisma } from "../../../../database/PrismaClient";
 
 interface ICreateAccount {
-    displayName: string;
+    fullName: string;
     email: string;
     password: string;
 }
 
 export class CreateAccountUseCase {
-    async execute({ displayName, email, password }: ICreateAccount) {
+    async execute({ fullName, email, password }: ICreateAccount) {
         // checking if email exists
         const emailExist = await prisma.user.findUnique({
             where: {
@@ -21,18 +22,23 @@ export class CreateAccountUseCase {
         }
         
         try {
+            var uid;
             // create user on Firebase
             await firebaseAdmin.auth().createUser({
-                displayName,
+                displayName: fullName,
                 email,
                 password,
+            })
+            .then((UserRecord) => {
+                uid = UserRecord.uid
             })
 
             // create user on Database
             await prisma.user.create({
                 data: {
-                    name: displayName,
+                    name: fullName,
                     email,
+                    uid,
                 }
             })
 

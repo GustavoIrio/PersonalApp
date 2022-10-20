@@ -3,12 +3,12 @@ import { CreateAccountUseCase } from "./CreateAccountUseCase";
 
 export class CreateAccountController {
     async handle(req: Request, res: Response) {
-        const { displayName, email, password } = req.body;
+        const { fullName, email, password } = req.body;
 
         const createAccountUseCase = new CreateAccountUseCase();
 
         const result = await createAccountUseCase.execute({
-            displayName,
+            fullName,
             email,
             password
         });
