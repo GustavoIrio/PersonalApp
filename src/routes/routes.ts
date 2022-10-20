@@ -12,10 +12,14 @@ const ensureLoginController = new EnsureLoginController();
 const resetPasswordByAppController = new ResetPasswordByAppController();
 const resetPasswordByEmailController = new ResetPasswordByEmailController();
 
-routes.post("/register/user",  ensureAuthenticatedAccount, createAccountController.handle);
+// Login routes
 routes.post("/login", ensureLoginController.handle);
-routes.post("/account/reset", ensureAuthenticatedAccount, resetPasswordByAppController.handle);
 routes.post("/login/reset", resetPasswordByEmailController.handle)
 
+// Register routes
+routes.post("/register/user",  ensureAuthenticatedAccount, createAccountController.handle);
+
+// Account routes
+routes.post("/account/reset", ensureAuthenticatedAccount, resetPasswordByAppController.handle);
 
 export { routes };
