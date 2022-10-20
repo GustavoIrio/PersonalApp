@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = "postgresql://postgres:1q2w3e4r5t6y@18.207.247.235:5432/apppersonal?schema=public"
 }
 
 model User {
@@ -13,8 +13,7 @@ model User {
   telephone         String?
   name              String
   cpf               String?             @unique
-  uid               String?             @default(uuid())
-  password          String
+  uid               String?             @unique
   description       String?
   is_active         Boolean             @default(true)
   gym_feedback      Gym_Feedback[]
