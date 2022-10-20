@@ -1,28 +1,45 @@
-import { UserRecord } from "firebase-admin/lib/auth/user-record";
 import { firebaseAdmin } from "../../../../database/Firebase-admin";
+import { prisma } from "../../../../database/PrismaClient";
 
 interface ICreateAccount {
-    fullName: string;
+    displayName: string;
     email: string;
     password: string;
 }
 
 export class CreateAccountUseCase {
-    async execute({ fullName, email, password }: ICreateAccount) {
-        // saving at firebase auth
-        const userFirebase = await firebaseAdmin.auth()
-            .createUser({
-                displayName: fullName,
-                email: email,
+    async execute({ displayName, email, password }: ICreateAccount) {
+        // checking if email exists
+        const emailExist = await prisma.user.findUnique({
+            where: {
+                email
+            }
+        })
+
+        if(emailExist) {
+            throw new Error("Email already exists!");
+        }
+        
+        try {
+            // create user on Firebase
+            await firebaseAdmin.auth().createUser({
+                displayName,
+                email,
                 password,
             })
-            .then((UserRecord) => {
-                firebaseAdmin.auth().generateEmailVerificationLink(email);
-            })
-            .catch((err) => {
-                throw new Error("Error creating new user: ", err) 
+
+            // create user on Database
+            await prisma.user.create({
+                data: {
+                    name: displayName,
+                    email,
+                }
             })
 
-            return userFirebase;
+            return ("User created")
+        } catch (err) {
+            throw new Error("Error creating new user");
+        }
+
     }
 }
