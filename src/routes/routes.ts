@@ -22,7 +22,7 @@ routes.post("/login/reset", resetPasswordByEmailController.handle)
 routes.post("/register/user", createAccountController.handle);
 
 // Account routes
-routes.get("/account/user", ensureAuthenticatedAccount, getUserAccountController.handle);
+routes.post("/account/user", ensureAuthenticatedAccount, getUserAccountController.handle);
 routes.post("/account/user/reset", ensureAuthenticatedAccount, resetPasswordByAppController.handle);
 
 export { routes };

@@ -10,9 +10,12 @@ export class GetUserAccountUseCase {
             const user = await prisma.user.findUnique({
                 where: {
                     uid
-                },
+                }, include: {
+                    gym_feedback: true,
+                    personal_Feedback: true,
+                    training: true,
+                }
             })
-            console.log(user);
             return user;
         } catch (error) {
             throw new Error("Account not exist");

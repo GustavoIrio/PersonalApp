@@ -5,11 +5,9 @@ export class GetUserAccountController {
     async handle(req: Request, res: Response) {
         const { uid } = req;
 
-        console.log(uid)
-
         const getUserAccountUseCase = new GetUserAccountUseCase();
 
-        const result = getUserAccountUseCase.execute({ uid });
+        const result = await getUserAccountUseCase.execute({ uid });
 
         console.log(result)
 
