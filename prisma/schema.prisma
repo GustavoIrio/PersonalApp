@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://postgres:1q2w3e4r5t6y@18.207.247.235:5432/apppersonal?schema=public"
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -52,6 +52,7 @@ model Gym {
   city         City           @relation(fields: [city_id], references: [id])
   city_id      Int
   gym_feedback Gym_Feedback[]
+  personal_gym Personal_Gym[]
 
   @@map("gym")
 }
@@ -73,6 +74,7 @@ model Personal {
   personal_feedback  Personal_Feedback[]
   training           Training[]
   personal_specialty Personal_Specialty[]
+  personal_gym       Personal_Gym[]
 
   @@map("personal")
 }
@@ -135,4 +137,12 @@ model Personal_Specialty {
   specialty_id Int
 
   @@map("personal_specialty")
+}
+
+model Personal_Gym {
+  id          Int       @id @default(autoincrement())
+  personal    Personal? @relation(fields: [personal_id], references: [id])
+  personal_id Int?
+  gym         Gym?      @relation(fields: [gym_id], references: [id])
+  gym_id      Int?
 }
