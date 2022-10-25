@@ -25,8 +25,8 @@ model User {
 
 model City {
   id        Int        @id @default(autoincrement())
-  name      String
-  city_code String
+  name      String     @unique
+  city_code String?
   gym       Gym[]
   personal  Personal[]
 
@@ -35,8 +35,8 @@ model City {
 
 model Specialty {
   id                 Int                  @id @default(autoincrement())
-  name               String
-  description        String
+  name               String               @unique
+  description        String?
   personal_specialty Personal_Specialty[]
 
   @@map("specialty")
@@ -60,15 +60,15 @@ model Gym {
 model Personal {
   id                 Int                  @id @default(autoincrement())
   email              String               @unique
-  telephone          String
+  telephone          String?
   name               String
   cpf                String               @unique
-  uid                String               @default(uuid())
+  uid                String?              @unique
   is_active          Boolean              @default(true)
   is_admin           Boolean              @default(false)
   description        String
   hours_price        Float
-  city               City                 @relation(fields: [city_id], references: [id])
+  city               City?                @relation(fields: [city_id], references: [id])
   city_id            Int
   payment            Payment[]
   personal_feedback  Personal_Feedback[]
