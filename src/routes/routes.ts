@@ -3,7 +3,7 @@ import { ensureAuthenticatedAccount } from "../middleware/ensureAuthenticatedAcc
 import { CreateAccountController } from "../modules/accounts/useCases/createAccount/CreateAccountController";
 import { CreatePersonalAccountController } from "../modules/accounts/useCases/createPersonalAccount/CreatePersonalAccountController";
 import { EnsureLoginController } from "../modules/accounts/useCases/ensureLoginAccount/EnsureLoginController";
-import { GetPersonalAccountController } from "../modules/accounts/useCases/getPersonalAccount/GetUserAccountController";
+import { GetPersonalAccountController } from "../modules/accounts/useCases/getPersonalAccount/GetPersonalAccountController";
 import { GetUserAccountController } from "../modules/accounts/useCases/getUserAccount/GetUserAccountController";
 import { ResetPasswordByAppController } from "../modules/accounts/useCases/resetPasswordByApp/ResetPasswordByAppController";
 import { ResetPasswordByEmailController } from "../modules/accounts/useCases/resetPasswordByEmail/ResetPasswordByEmailController";
