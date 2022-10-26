@@ -36,6 +36,17 @@ export class CreatePersonalAccountUseCase {
       throw new Error("Email already exists!");
     }
 
+    // checking if CPF exists
+    const cpfExist = await prisma.personal.findUnique({
+      where: {
+        cpf,
+      },
+    });
+
+    if(cpfExist) {
+      throw new Error("CPF already exists!");
+    }
+
     var uid;
     // create user on Firebase
     await firebaseAdmin
@@ -57,6 +68,7 @@ export class CreatePersonalAccountUseCase {
         cpf,
         description,
         hours_price: hourPrice,
+        uid,
         city: {
           connectOrCreate: {
             where: {
