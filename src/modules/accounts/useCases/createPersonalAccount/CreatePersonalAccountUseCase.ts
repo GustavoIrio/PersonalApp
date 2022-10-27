@@ -14,17 +14,7 @@ interface IPersonalAccount {
 }
 
 export class CreatePersonalAccountUseCase {
-  async execute({
-    fullName,
-    email,
-    password,
-    cpf,
-    hourPrice,
-    description,
-    telephone,
-    cityName,
-    specializations,
-  }: IPersonalAccount) {
+  async execute({ fullName, email, password, cpf, hourPrice, description, telephone, cityName, specializations}: IPersonalAccount) {
     // checking if email exists
     const emailExist = await prisma.personal.findUnique({
       where: {
@@ -43,21 +33,22 @@ export class CreatePersonalAccountUseCase {
       },
     });
 
-    if(cpfExist) {
+    if (cpfExist) {
       throw new Error("CPF already exists!");
     }
 
     var uid;
     // create user on Firebase
-    await firebaseAdmin
-      .auth()
-      .createUser({
+    await firebaseAdmin.auth().createUser({
         displayName: fullName,
         email,
         password,
       })
       .then((UserRecord) => {
         uid = UserRecord.uid;
+      })
+      .catch((Error) => {
+        throw new Error("Error to create Personal on Firebase");
       });
 
     // create user on Database
@@ -68,6 +59,7 @@ export class CreatePersonalAccountUseCase {
         cpf,
         description,
         hours_price: hourPrice,
+        telephone,
         uid,
         city: {
           connectOrCreate: {
@@ -80,7 +72,7 @@ export class CreatePersonalAccountUseCase {
           },
         },
       },
-    });
+    })
 
     const userSpecialties = specializations.map((specialty) =>
       prisma.personal_Specialty.create({
