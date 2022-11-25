@@ -2,6 +2,7 @@ import { Router } from "express";
 import { ensureAuthenticatedAccount } from "../middleware/ensureAuthenticatedAccount";
 import { CreateAccountController } from "../modules/accounts/useCases/createAccount/CreateAccountController";
 import { CreatePersonalAccountController } from "../modules/accounts/useCases/createPersonalAccount/CreatePersonalAccountController";
+import { EditUserAccountController } from "../modules/accounts/useCases/editUserAccount/EditUserAccountController";
 import { EnsureLoginController } from "../modules/accounts/useCases/ensureLoginAccount/EnsureLoginController";
 import { GetPersonalAccountController } from "../modules/accounts/useCases/getPersonalAccount/GetPersonalAccountController";
 import { GetUserAccountController } from "../modules/accounts/useCases/getUserAccount/GetUserAccountController";
@@ -19,6 +20,7 @@ const getUserAccountController = new GetUserAccountController();
 const createPersonalAccountController = new CreatePersonalAccountController();
 const getPersonalAccountController = new GetPersonalAccountController();
 const listPersonalsController = new ListPersonalsController();
+const editUserAccountController = new EditUserAccountController();
 
 // Login routes
 routes.post("/login", ensureLoginController.handle);
@@ -32,6 +34,7 @@ routes.post("/register/personal", createPersonalAccountController.handle);
 routes.post("/account/user", ensureAuthenticatedAccount, getUserAccountController.handle);
 routes.post("/account/personal", ensureAuthenticatedAccount, getPersonalAccountController.handle);
 routes.post("/account/reset", ensureAuthenticatedAccount, resetPasswordByAppController.handle);
+routes.put("/account/user/edit", ensureAuthenticatedAccount, editUserAccountController.handle);
 
 // List Personals
 routes.get("/listPersonals", ensureAuthenticatedAccount, listPersonalsController.handle);
