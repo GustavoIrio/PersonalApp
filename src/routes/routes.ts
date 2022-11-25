@@ -5,6 +5,7 @@ import { CreatePersonalAccountController } from "../modules/accounts/useCases/cr
 import { EnsureLoginController } from "../modules/accounts/useCases/ensureLoginAccount/EnsureLoginController";
 import { GetPersonalAccountController } from "../modules/accounts/useCases/getPersonalAccount/GetPersonalAccountController";
 import { GetUserAccountController } from "../modules/accounts/useCases/getUserAccount/GetUserAccountController";
+import { ListPersonalsController } from "../modules/accounts/useCases/listPersonals/ListPersonalsController";
 import { ResetPasswordByAppController } from "../modules/accounts/useCases/resetPasswordByApp/ResetPasswordByAppController";
 import { ResetPasswordByEmailController } from "../modules/accounts/useCases/resetPasswordByEmail/ResetPasswordByEmailController";
 
@@ -17,6 +18,7 @@ const resetPasswordByEmailController = new ResetPasswordByEmailController();
 const getUserAccountController = new GetUserAccountController();
 const createPersonalAccountController = new CreatePersonalAccountController();
 const getPersonalAccountController = new GetPersonalAccountController();
+const listPersonalsController = new ListPersonalsController();
 
 // Login routes
 routes.post("/login", ensureLoginController.handle);
@@ -30,5 +32,8 @@ routes.post("/register/personal", createPersonalAccountController.handle);
 routes.post("/account/user", ensureAuthenticatedAccount, getUserAccountController.handle);
 routes.post("/account/personal", ensureAuthenticatedAccount, getPersonalAccountController.handle);
 routes.post("/account/reset", ensureAuthenticatedAccount, resetPasswordByAppController.handle);
+
+// List Personals
+routes.get("/listPersonals", ensureAuthenticatedAccount, listPersonalsController.handle);
 
 export { routes };
