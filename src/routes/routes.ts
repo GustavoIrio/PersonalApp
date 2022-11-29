@@ -6,6 +6,7 @@ import { EditPersonalAccountController } from "../modules/accounts/useCases/edit
 import { EditUserAccountController } from "../modules/accounts/useCases/editUserAccount/EditUserAccountController";
 import { EnsureLoginController } from "../modules/accounts/useCases/ensureLoginAccount/EnsureLoginController";
 import { GetPersonalAccountController } from "../modules/accounts/useCases/getPersonalAccount/GetPersonalAccountController";
+import { GetPersonalTrainingsController } from "../modules/accounts/useCases/getPersonalTrainings/GetPersonalTrainingsController";
 import { GetUserAccountController } from "../modules/accounts/useCases/getUserAccount/GetUserAccountController";
 import { GetUserTrainingsController } from "../modules/accounts/useCases/getUserTrainings/GetUserTrainingsController";
 import { ListPersonalsController } from "../modules/accounts/useCases/listPersonals/ListPersonalsController";
@@ -25,6 +26,7 @@ const listPersonalsController = new ListPersonalsController();
 const editUserAccountController = new EditUserAccountController();
 const editPersonalAccountController = new EditPersonalAccountController();
 const getUserTrainings = new GetUserTrainingsController();
+const getPersonalTrainings = new GetPersonalTrainingsController();
 
 // Login routes
 routes.post("/login", ensureLoginController.handle);
@@ -45,6 +47,7 @@ routes.put("/account/personal/edit", ensureAuthenticatedAccount, editPersonalAcc
 routes.get("/listPersonals", ensureAuthenticatedAccount, listPersonalsController.handle);
 
 // List Trainings
-routes.post("/trainings", ensureAuthenticatedAccount, getUserTrainings.handle);
+routes.post("/user/trainings", ensureAuthenticatedAccount, getUserTrainings.handle);
+routes.post("/personal/trainings", ensureAuthenticatedAccount, getPersonalTrainings.handle);
 
 export { routes };
