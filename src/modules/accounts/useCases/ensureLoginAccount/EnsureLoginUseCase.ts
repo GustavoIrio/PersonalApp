@@ -1,4 +1,5 @@
 import axios from "axios";
+import { prisma } from "../../../../database/PrismaClient";
 
 interface ILogin {
     email: string;
@@ -17,6 +18,22 @@ export class EnsureLoginUseCase {
                 returnSecureToken: true,
             },
         )
+            var isPersonal;
+            
+            const isPersonalAccount = await prisma.personal.findFirst({
+                where: {
+                    email: email
+                }
+            })
+
+            if(isPersonalAccount) {
+                isPersonal = true
+            } else {
+                isPersonal = false
+            }
+
+            login.data.isPersonal = isPersonal
+
             return login.data;
         
         } catch (err) {
